@@ -1,0 +1,288 @@
+{
+  "framework": {
+    "version": "1.0.0",
+    "mode": "educational_only",
+    "last_updated": "2024-01-01T00:00:00Z"
+  },
+  "education": {
+    "modules": {
+      "basics": {
+        "enabled": true,
+        "version": "1.0.0",
+        "completion_time_hours": 8,
+        "topics": [
+          "cryptocurrency_fundamentals",
+          "market_structure",
+          "trading_terminology",
+          "chart_reading",
+          "order_types"
+        ]
+      },
+      "analysis": {
+        "enabled": true,
+        "version": "1.0.0",
+        "completion_time_hours": 12,
+        "topics": [
+          "technical_analysis",
+          "fundamental_analysis",
+          "market_indicators",
+          "chart_patterns"
+        ]
+      },
+      "risk_management": {
+        "enabled": true,
+        "version": "1.0.0",
+        "completion_time_hours": 10,
+        "topics": [
+          "position_sizing",
+          "stop_losses",
+          "portfolio_diversification",
+          "risk_metrics",
+          "psychology"
+        ]
+      },
+      "simulation": {
+        "enabled": true,
+        "version": "1.0.0",
+        "completion_time_hours": 16,
+        "topics": [
+          "paper_trading",
+          "strategy_testing",
+          "performance_analysis",
+          "trade_journaling"
+        ]
+      }
+    },
+    "learning_paths": {
+      "beginner": {
+        "sequence": ["basics", "analysis", "risk_management", "simulation"],
+        "total_hours": 46,
+        "description": "Complete introduction to crypto trading concepts"
+      },
+      "intermediate": {
+        "sequence": ["analysis", "risk_management", "simulation"],
+        "total_hours": 38,
+        "description": "For those with basic crypto knowledge"
+      },
+      "risk_focused": {
+        "sequence": ["risk_management", "simulation"],
+        "total_hours": 26,
+        "description": "Focus on risk management and practical application"
+      }
+    }
+  },
+  "simulation": {
+    "initial_portfolio_value": 10000,
+    "available_assets": {
+      "BTC": {
+        "name": "Bitcoin",
+        "initial_price": 45000,
+        "volatility": 0.025,
+        "educational_focus": "Large cap cryptocurrency basics"
+      },
+      "ETH": {
+        "name": "Ethereum",
+        "initial_price": 3000,
+        "volatility": 0.03,
+        "educational_focus": "Smart contract platform concepts"
+      },
+      "LTC": {
+        "name": "Litecoin",
+        "initial_price": 150,
+        "volatility": 0.035,
+        "educational_focus": "Alternative cryptocurrency example"
+      },
+      "ADA": {
+        "name": "Cardano",
+        "initial_price": 0.5,
+        "volatility": 0.04,
+        "educational_focus": "Mid-cap cryptocurrency volatility"
+      }
+    },
+    "data_source": "simulated",
+    "update_frequency": "1m",
+    "market_scenarios": {
+      "bull_market": {
+        "description": "Rising market scenario for learning trend following",
+        "duration_hours": 24,
+        "volatility_multiplier": 0.8,
+        "trend_bias": 0.001
+      },
+      "bear_market": {
+        "description": "Declining market scenario for learning risk management",
+        "duration_hours": 24,
+        "volatility_multiplier": 1.2,
+        "trend_bias": -0.001
+      },
+      "sideways": {
+        "description": "Range-bound market for learning patience and range trading",
+        "duration_hours": 24,
+        "volatility_multiplier": 1.0,
+        "trend_bias": 0
+      },
+      "high_volatility": {
+        "description": "Volatile market for stress testing strategies",
+        "duration_hours": 12,
+        "volatility_multiplier": 2.0,
+        "trend_bias": 0
+      }
+    },
+    "risk_limits": {
+      "max_position_size": 0.1,
+      "max_daily_loss": 0.05,
+      "max_leverage": 1.0,
+      "stop_loss_required": true
+    },
+    "educational_features": {
+      "trade_explanations": true,
+      "risk_warnings": true,
+      "performance_analytics": true,
+      "learning_reminders": true
+    }
+  },
+  "analysis": {
+    "indicators": {
+      "moving_averages": {
+        "enabled": true,
+        "periods": [10, 20, 50, 200],
+        "educational_note": "Learn trend identification and momentum"
+      },
+      "rsi": {
+        "enabled": true,
+        "period": 14,
+        "overbought": 70,
+        "oversold": 30,
+        "educational_note": "Understand overbought/oversold conditions"
+      },
+      "macd": {
+        "enabled": true,
+        "fast": 12,
+        "slow": 26,
+        "signal": 9,
+        "educational_note": "Learn momentum and trend changes"
+      },
+      "bollinger_bands": {
+        "enabled": true,
+        "period": 20,
+        "std_dev": 2,
+        "educational_note": "Understand volatility and mean reversion"
+      }
+    },
+    "chart_timeframes": ["1m", "5m", "15m", "1h", "4h", "1d"],
+    "pattern_recognition": {
+      "enabled": true,
+      "patterns": [
+        "support_resistance",
+        "trend_lines",
+        "triangles",
+        "head_shoulders"
+      ],
+      "educational_focus": "Pattern identification and interpretation"
+    }
+  },
+  "plugins": {
+    "moving_average_analysis": {
+      "enabled": true,
+      "periods": [10, 20, 50],
+      "educational_objectives": ["trend_analysis", "momentum_understanding"]
+    },
+    "basic_trading_strategy": {
+      "enabled": true,
+      "buy_threshold": 0.02,
+      "sell_threshold": -0.01,
+      "educational_objectives": ["signal_generation", "strategy_logic"]
+    },
+    "performance_report": {
+      "enabled": true,
+      "report_frequency": "daily",
+      "metrics": ["return", "sharpe", "max_drawdown", "win_rate"],
+      "educational_objectives": ["performance_analysis", "metric_understanding"]
+    },
+    "risk_calculator": {
+      "enabled": true,
+      "methods": ["position_sizing", "var_calculation", "correlation_analysis"],
+      "educational_objectives": ["risk_measurement", "portfolio_risk"]
+    }
+  },
+  "legal_compliance": {
+    "educational_only": true,
+    "disclaimer_required": true,
+    "age_verification": true,
+    "jurisdiction_check": true,
+    "data_privacy": true,
+    "audit_trail": true,
+    "regulatory_notices": {
+      "finra": "Educational content only - not investment advice",
+      "sec": "Simulated trading for educational purposes",
+      "cftc": "Virtual trading environment - no real transactions",
+      "general": "All trading involves risk - educational content only"
+    }
+  },
+  "security": {
+    "data_encryption": true,
+    "access_logging": true,
+    "session_management": true,
+    "input_validation": true,
+    "no_real_api_access": true,
+    "isolated_environment": true
+  },
+  "ui_settings": {
+    "theme": "educational",
+    "show_disclaimers": true,
+    "highlight_educational_content": true,
+    "progress_tracking": true,
+    "learning_objectives_display": true,
+    "risk_warnings_prominent": true
+  },
+  "advanced_features": {
+    "backtesting": {
+      "enabled": true,
+      "historical_data_years": 2,
+      "educational_focus": "Strategy validation and learning"
+    },
+    "portfolio_optimization": {
+      "enabled": true,
+      "methods": ["mean_variance", "risk_parity"],
+      "educational_focus": "Portfolio construction concepts"
+    },
+    "market_scenarios": {
+      "enabled": true,
+      "stress_testing": true,
+      "crisis_simulations": true,
+      "educational_focus": "Risk management under stress"
+    }
+  },
+  "insert_points": {
+    "educational_modules": [
+      "src.education.derivatives",
+      "src.education.options",
+      "src.education.advanced_strategies"
+    ],
+    "analysis_tools": [
+      "src.analysis.sentiment_analysis",
+      "src.analysis.market_microstructure",
+      "src.analysis.machine_learning"
+    ],
+    "risk_management": [
+      "src.risk.var_models",
+      "src.risk.stress_testing",
+      "src.risk.correlation_analysis"
+    ],
+    "simulation_scenarios": [
+      "src.simulation.black_swan_events",
+      "src.simulation.market_crashes",
+      "src.simulation.flash_crashes"
+    ],
+    "reporting_tools": [
+      "src.reporting.advanced_analytics",
+      "src.reporting.compliance_reports",
+      "src.reporting.educational_assessments"
+    ]
+  },
+  "version_control": {
+    "config_version": "1.0.0",
+    "update_mechanism": "plugin_based",
+    "backward_compatibility": true,
+    "migration_support": true
+  }
+}
