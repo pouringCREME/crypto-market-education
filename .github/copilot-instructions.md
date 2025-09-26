@@ -110,11 +110,11 @@ config_manager.add_educational_module("new_topic", {
 ## Insert Points for Extensions
 
 The framework includes designated extension points for:
-- **Educational Modules**: `src.education.*` for new learning topics
-- **Simulation Scenarios**: `src.simulation.*` for market conditions
-- **Analysis Tools**: `src.analysis.*` for educational market analysis
-- **Risk Management**: `src.risk.*` for risk education features
-- **Plugin Architecture**: `src.plugins.*` for third-party educational tools
+- **Educational Modules**: `src/education/modules/` or `src/education/topics/` for new learning topics
+- **Simulation Scenarios**: `src/simulation/scenarios/` for market conditions
+- **Analysis Tools**: `src/analysis/tools/` for educational market analysis
+- **Risk Management**: `src/risk/strategies/` for risk education features
+- **Plugin Architecture**: `src/plugins/strategies/` or `src/plugins/tools/` for third-party educational tools
 
 ## Important Reminders
 
