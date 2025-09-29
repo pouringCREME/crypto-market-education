@@ -82,6 +82,34 @@ class ConfigurationManager:
                 "audit_trail": True,
                 "data_encryption": True,
                 "access_logging": True
+            },
+            "automated_trading": {
+                "enabled": True,
+                "default_mode": "educational",
+                "max_portfolio_risk": 0.02,
+                "max_position_size": 0.1,
+                "educational_mode_active": True,
+                "manual_override_required": True,
+                "high_frequency_trading": False,
+                "supported_modes": ["educational", "paper", "live"],
+                "risk_management": {
+                    "position_sizing": True,
+                    "stop_loss_required": True,
+                    "drawdown_limits": True,
+                    "correlation_monitoring": True
+                },
+                "market_data": {
+                    "real_time_enabled": True,
+                    "high_volatility_tracking": True,
+                    "multi_timeframe_analysis": True,
+                    "pattern_recognition": True
+                },
+                "strategies": {
+                    "trend_following": True,
+                    "momentum_trading": True,
+                    "mean_reversion": True,
+                    "educational_conservative": True
+                }
             }
         }
     
@@ -99,6 +127,13 @@ class ConfigurationManager:
                 "src.simulation.market_data",
                 "src.simulation.order_management"
             ],
+            "automated_trading": [
+                "src.trading.automated_engine",
+                "src.trading.market_data",
+                "src.trading.risk_manager",
+                "src.trading.strategy_engine",
+                "src.trading.execution_engine"
+            ],
             "analysis_tools": [
                 "src.analysis.indicators",
                 "src.analysis.charting",
@@ -112,12 +147,21 @@ class ConfigurationManager:
             "data_sources": [
                 "src.data.simulated",
                 "src.data.historical",
-                "src.data.educational"
+                "src.data.educational",
+                "src.data.real_time"
             ],
             "plugins": [
                 "src.plugins.educational",
                 "src.plugins.analysis",
-                "src.plugins.reporting"
+                "src.plugins.reporting",
+                "src.plugins.trading_strategies"
+            ],
+            "strategy_types": [
+                "src.strategies.trend_following",
+                "src.strategies.momentum",
+                "src.strategies.mean_reversion",
+                "src.strategies.arbitrage",
+                "src.strategies.educational"
             ]
         }
     
