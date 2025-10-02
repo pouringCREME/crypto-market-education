@@ -105,6 +105,8 @@ config_manager.add_educational_module("new_topic", {
 ## Testing & Validation
 
 ### Before Submitting Changes
+
+> **Note:** The `PYTHONPATH=src` prefix is required so that Python can locate the project's modules when running example scripts. This is necessary because the repository uses a `src/` directory layout. If you encounter `ModuleNotFoundError`, ensure you are setting `PYTHONPATH=src` as shown below.
 1. Run the educational demo: `PYTHONPATH=src python examples/educational_demo.py`
 2. Run the automated trading demo: `PYTHONPATH=src python examples/automated_trading_demo.py`
 3. Test in educational mode first, then paper trading mode if applicable
