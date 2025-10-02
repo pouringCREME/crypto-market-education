@@ -14,7 +14,7 @@ This repository contains an **advanced automated cryptocurrency trading framewor
 ## Repository Structure & Architecture
 
 ### Core Components
-- `src/trading/` - **Automated trading engine** (real-time execution, market data, risk management, strategy engine)
+- `src/trading/` - **Automated trading engine** (includes real-time execution, market data integration, risk management systems, and strategy engine)
 - `src/education/` - Educational modules (basics, analysis, risk management)
 - `src/simulation/` - Paper trading simulation environment
 - `src/config/` - Configuration management with multi-mode support
