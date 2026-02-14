@@ -2,7 +2,7 @@
 
 A comprehensive **automated trading system** with **educational capabilities** for learning cryptocurrency trading, market analysis, and risk management through both simulation and real trading environments.
 
-## ⚠️ Important Legal Notice
+
 
 **This software supports both educational simulation AND real automated trading. Please read [DISCLAIMER.md](DISCLAIMER.md) before proceeding.**
 
@@ -62,7 +62,7 @@ A comprehensive **automated trading system** with **educational capabilities** f
 - 🚨 **REAL MONEY** - significant financial risk
 - ⚡ **Live execution** - actual market trades
 - 🛡️ **Full risk controls** - all safety systems active
-- 📋 **Compliance required** - proper licensing and legal compliance needed
+- 📋 **Compliance required** - proper licensing and legal compliance may be needed
 
 ## 📊 Quick Start
 
@@ -89,7 +89,7 @@ PYTHONPATH=src python examples/automated_trading_demo.py
 
 ### Live Trading (Advanced Users Only)
 ```bash
-# ⚠️ DANGER: This involves real money
+
 # Ensure proper legal compliance and risk management
 # Only proceed if you understand the risks
 
