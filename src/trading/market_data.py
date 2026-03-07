@@ -215,15 +215,24 @@ class RealTimeMarketData:
                     # Simulate price movement with higher volatility for meme coins
                     asset_type = asset_types.get(symbol, AssetType.CRYPTOCURRENCY)
                     
+                    # Volatility is per simulation tick (1 second).
+                    # Real intra-second volatility for even meme coins is tiny.
+                    # These values approximate realistic per-second ranges:
+                    #   BTC/ETH: ~0.01–0.05% per second in normal conditions
+                    #   Meme coins: 2–5× that, but still not ±15%/second
+                    # ±15%/second was unrealistic and caused constant false alerts.
                     if asset_type == AssetType.MEME_COIN:
-                        # Higher volatility for meme coins
-                        change_pct = random.uniform(-0.15, 0.15)  # +/- 15%
+                        # Elevated but realistic intra-second simulation
+                        change_pct = random.gauss(0, 0.002)  # ~0.2% std per tick
+                        change_pct = max(-0.05, min(0.05, change_pct))  # cap at ±5%
                     elif asset_type == AssetType.NEW_LAUNCH:
-                        # Extreme volatility for new launches
-                        change_pct = random.uniform(-0.25, 0.25)  # +/- 25%
+                        # Higher volatility for new/micro-cap launches
+                        change_pct = random.gauss(0, 0.004)  # ~0.4% std per tick
+                        change_pct = max(-0.10, min(0.10, change_pct))  # cap at ±10%
                     else:
-                        # Normal volatility
-                        change_pct = random.uniform(-0.03, 0.03)  # +/- 3%
+                        # Major cryptocurrencies: lower intra-second movement
+                        change_pct = random.gauss(0, 0.0005)  # ~0.05% std per tick
+                        change_pct = max(-0.02, min(0.02, change_pct))  # cap at ±2%
                     
                     new_price = base_prices[symbol] * (1 + change_pct)
                     base_prices[symbol] = new_price
