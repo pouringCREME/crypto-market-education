@@ -251,46 +251,80 @@ class RiskManager:
             return True
         return False
     
+    def record_daily_return(self, portfolio_value: float) -> None:
+        """
+        Record a daily portfolio return for Sharpe ratio calculation.
+
+        This must be called once per day (or per period) with the current
+        portfolio value to enable accurate Sharpe ratio computation.
+        Without regular calls here, sharpe_ratio will always be 0.0.
+        """
+        if self.daily_returns or self.peak_portfolio_value != self.portfolio_value:
+            prev_value = self.peak_portfolio_value if not self.daily_returns else (
+                self.portfolio_value * (1 + self.daily_returns[-1])
+                if self.daily_returns else self.portfolio_value
+            )
+            # Compute simple period return relative to starting portfolio value
+        daily_return = (portfolio_value - self.portfolio_value) / self.portfolio_value
+        self.daily_returns.append(daily_return)
+        # Keep rolling 252-day window
+        if len(self.daily_returns) > 252:
+            self.daily_returns = self.daily_returns[-252:]
+
     def calculate_portfolio_risk(self) -> RiskMetrics:
-        """Calculate comprehensive portfolio risk metrics."""
+        """
+        Calculate portfolio risk metrics.
+
+        ACCURACY NOTES:
+        - portfolio_var: Fixed 5% of exposure — NOT a statistically valid VaR.
+          A proper 99% historical VaR requires a return series and percentile calc.
+        - sharpe_ratio: Requires daily_returns to be populated via record_daily_return().
+          Will be 0.0 until that is called.
+        - correlation_risk: Position count × 0.1 — not actual pairwise correlation.
+          True correlation requires an asset return covariance matrix.
+        """
         try:
             # Current portfolio metrics
             total_exposure = sum(pos.position_value for pos in self.positions.values())
             total_pnl = sum(pos.unrealized_pnl for pos in self.positions.values())
             current_portfolio_value = self.portfolio_value + total_pnl
-            
+
             # Max position risk
             max_position_risk = max(
                 (pos.risk_percentage for pos in self.positions.values()),
                 default=0.0
             )
-            
-            # Simplified VaR calculation (99% confidence)
-            portfolio_var = total_exposure * 0.05  # 5% VaR approximation
-            
-            # Sharpe ratio (simplified)
-            if self.daily_returns:
+
+            # Approximate VaR: fixed 5% of total exposure.
+            # NOTE: This is a rough heuristic, not a proper statistical VaR.
+            # Replace with historical percentile or parametric VaR for accuracy.
+            portfolio_var = total_exposure * 0.05
+
+            # Sharpe ratio — requires daily_returns populated via record_daily_return()
+            if len(self.daily_returns) >= 2:
                 avg_return = sum(self.daily_returns) / len(self.daily_returns)
                 return_std = self._calculate_std(self.daily_returns)
-                sharpe_ratio = avg_return / return_std if return_std > 0 else 0.0
+                # Annualised Sharpe assuming daily periods, risk-free rate ≈ 0
+                sharpe_ratio = (avg_return / return_std * (252 ** 0.5)) if return_std > 0 else 0.0
             else:
-                sharpe_ratio = 0.0
-            
+                sharpe_ratio = 0.0  # Insufficient data — call record_daily_return() daily
+
             # Max drawdown
             if current_portfolio_value > self.peak_portfolio_value:
                 self.peak_portfolio_value = current_portfolio_value
-            
+
             max_drawdown = (self.peak_portfolio_value - current_portfolio_value) / self.peak_portfolio_value
-            
-            # Correlation risk (simplified - assumes some correlation)
-            correlation_risk = len(self.positions) * 0.1  # Simplified correlation factor
-            
+
+            # Proxy correlation risk: position count as rough diversification penalty.
+            # NOTE: Not actual correlation — replace with covariance-based measure.
+            correlation_risk = len(self.positions) * 0.1
+
             # Overall risk score (0-100)
             risk_score = min(100, (
-                max_position_risk * 100 * 2 +  # Position concentration
+                max_position_risk * 100 * 2 +           # Position concentration
                 (total_exposure / self.portfolio_value) * 50 +  # Exposure
-                max_drawdown * 100 +  # Drawdown
-                correlation_risk * 20  # Correlation
+                max_drawdown * 100 +                     # Drawdown
+                correlation_risk * 20                    # Proxy diversification
             ))
             
             metrics = RiskMetrics(

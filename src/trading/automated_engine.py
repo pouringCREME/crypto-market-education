@@ -194,40 +194,68 @@ class AutomatedTradingEngine:
     
     def _validate_configuration(self) -> bool:
         """Validate system configuration."""
+        # Live trading is not implemented — always block it
+        if self.config.mode == TradingMode.LIVE_TRADING:
+            self.logger.error(
+                "LIVE_TRADING mode is not supported: no execution engine exists. "
+                "Use EDUCATIONAL or PAPER_TRADING for signal research."
+            )
+            return False
+
         # Educational mode validation
         if self._educational_mode_active:
-            if self.config.mode == TradingMode.LIVE_TRADING:
-                self.logger.error("Live trading not allowed in educational mode")
-                return False
-        
+            if self.config.mode != TradingMode.EDUCATIONAL:
+                self.logger.warning(
+                    "Educational mode flag is active but mode is not EDUCATIONAL. "
+                    "Forcing to EDUCATIONAL mode for safety."
+                )
+                self.config.mode = TradingMode.EDUCATIONAL
+
         # Risk limits validation
         if self.config.max_portfolio_risk > 0.1:  # 10% max
-            self.logger.error("Portfolio risk limit too high")
+            self.logger.error("Portfolio risk limit too high (max 10%)")
             return False
-        
+
         if self.config.max_position_size > 0.2:  # 20% max
-            self.logger.error("Position size limit too high")
+            self.logger.error("Position size limit too high (max 20%)")
             return False
-        
+
         return True
     
     def _initialize_components(self) -> None:
         """Initialize trading engine components."""
-        # Initialize based on mode
         if self.config.mode == TradingMode.EDUCATIONAL:
-            # Use educational components
-            self.logger.info("Initializing in educational mode")
+            self.logger.info("Initializing in educational mode — fully simulated, no real data or money")
         elif self.config.mode == TradingMode.PAPER_TRADING:
-            # Initialize paper trading components
-            self.logger.info("Initializing paper trading mode")
+            self.logger.info("Initializing paper trading mode — real data feeds, virtual money")
         elif self.config.mode == TradingMode.LIVE_TRADING:
-            # Initialize live trading components (requires additional validation)
-            self.logger.warning("Initializing LIVE trading mode - real money at risk")
-    
+            # NOTE: No execution engine exists. LIVE_TRADING is a forward-compatibility
+            # stub only. It will not execute any real orders. Log and refuse.
+            self.logger.error(
+                "LIVE_TRADING mode selected but no execution engine is implemented. "
+                "Real order execution requires a connected exchange adapter "
+                "(src/trading/execution_engine.py — not yet built). "
+                "Refusing to proceed. Use EDUCATIONAL or PAPER_TRADING instead."
+            )
+            raise NotImplementedError(
+                "Live trading execution engine is not implemented. "
+                "This system generates signals for manual review only. "
+                "See ARCHITECTURE.md for the current implementation status."
+            )
+
     def _emergency_position_closure(self) -> None:
-        """Emergency closure of all positions."""
-        self.logger.warning("Emergency position closure initiated")
-        # Implementation will be added with execution engine
+        """
+        Emergency closure of all positions.
+
+        NOTE: This is a stub. No execution engine exists, so there are no
+        live positions to close. In a future implementation with a real
+        execution adapter, this would issue market-sell orders for all open
+        positions. Until then, it only logs.
+        """
+        self.logger.warning(
+            "Emergency position closure called — no execution engine available. "
+            "If you have real positions on an exchange, close them manually immediately."
+        )
     
     # Educational system integration
     def get_educational_system(self) -> EducationalTradingSystem:
