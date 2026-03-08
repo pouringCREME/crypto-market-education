@@ -47,11 +47,42 @@ const [best, second] = barry.breedPair();
 await archetypeV3.breedArchetypes(best, second);
 ```
 
+## ArchetypeV3 Wiring (now complete)
+
+**`barry/archetypeConnector.ts`** — `ArchetypeConnector` class:
+- `bootstrap(barry)` — creates on-chain archetypes for initial genome pool
+- `recordTrade(genomeId, pnlUsd)` → `ArchetypeV3.recordTrade(id, milliUsd, win)`
+  Fire-and-forget, never blocks the trade loop
+- `syncEvolution(barry)` → `breedArchetypes()` when parents have 10+ on-chain trades,
+  `createArchetype()` as fallback (first gen, immigrants, breeding cooldown)
+
+**Param mapping** (14 genome params → 5 on-chain ArchetypeV3 params):
+
+| On-chain param    | From genome param   | Formula                  |
+|-------------------|---------------------|--------------------------|
+| lookback [1–600]  | maFast              | ×6                       |
+| thresholdBP [10–1000] | patternSensitivity | ×1000               |
+| riskMultiplierBP [50–300] | riskPerTrade | ×6000              |
+| cooldown [1–600]  | momentumWindow      | ×10                      |
+| explorationBP [10–2000] | curiosity     | ×2000                    |
+
+The other 9 params live off-chain in Barry only.
+
+**`index.ts` changes:**
+- Barry + ArchetypeConnector instantiated after `verifyConnection()`
+- Per-tick: `barry.updatePrices()` + `barry.perceive()` logged as advisory signal
+- After `didExecute=true`: PnL computed from pre/post balance snapshot,
+  → `barry.recordTradeResult()` + `archetypeConnector.recordTrade()`
+  → if `barry.shouldEvolve()`: `barry.evolve()` + `archetypeConnector.syncEvolution()`
+
+**`config.ts`**: `ARCHETYPE_V3_ADDRESS` env var → `CONTRACTS.archetypeV3`
+When unset, Barry runs fully off-chain (no gas, no sync).
+
 ## What Still Needs Wiring
 
-- `_readUpstream()` stub in `weaver.ts` → real upstream feed
-- `recordTradeResult()` → call `archetypeV3.recordTrade()` on-chain
-- After `evolve()` → call `archetypeV3.updateArchetype()` with winning params
+- `_readUpstream()` stub in `weaver.ts` → real upstream feed (social velocity, on-chain flows)
+- Deploy `MimicArchetypeV3.sol` and set `ARCHETYPE_V3_ADDRESS=<deployed addr>` in `.env`
+- Authorize the CLEAN-BOT wallet: `archetypeV3.authorizeCaller(walletAddress)`
 
 ## No New Dependencies
 
