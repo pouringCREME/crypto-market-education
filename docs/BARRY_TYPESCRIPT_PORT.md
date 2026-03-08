@@ -78,11 +78,44 @@ The other 9 params live off-chain in Barry only.
 **`config.ts`**: `ARCHETYPE_V3_ADDRESS` env var → `CONTRACTS.archetypeV3`
 When unset, Barry runs fully off-chain (no gas, no sync).
 
+## Deployment — MimicArchetypeV3 (ready to run)
+
+Files prepared in `mimeticLORE/` (need `git commit` with Joshua's key):
+
+- `contracts/MimicArchetypeV3.sol` — copied from `_CONTRACTS/`
+- `scripts/deploy-archetype-v3.js` — deploys + calls `authorizeCaller(BOT_WALLET)`
+- `hardhat.config.js` — Base mainnet network added (chain 8453)
+
+**Test first (Sepolia — no real money):**
+```bash
+cd mimeticLORE
+export SEPOLIA_RPC_URL=<your sepolia RPC>
+export PRIVATE_KEY=<deployer key>
+export BOT_WALLET=0x705C4148012c2Af4Eac9DbA3daaA115f91fEe421
+npx hardhat run scripts/deploy-archetype-v3.js --network sepolia
+```
+
+**Then mainnet (Base):**
+```bash
+export BASE_RPC_URL=<your alchemy base endpoint>
+npx hardhat run scripts/deploy-archetype-v3.js --network base
+```
+
+**After either deploy — add to CLEAN-BOT env:**
+```bash
+ARCHETYPE_V3_ADDRESS=<printed address>
+```
+
+The deploy script:
+1. Deploys `MimicArchetypeV3` (deployer wallet becomes admin)
+2. Calls `authorizeCaller(BOT_WALLET)` so CLEAN-BOT can call `recordTrade()` / `breedArchetypes()`
+3. Reads back admin + authorized status to confirm
+4. Optionally verifies source on Basescan (set `BASESCAN_API_KEY`)
+
 ## What Still Needs Wiring
 
 - `_readUpstream()` stub in `weaver.ts` → real upstream feed (social velocity, on-chain flows)
-- Deploy `MimicArchetypeV3.sol` and set `ARCHETYPE_V3_ADDRESS=<deployed addr>` in `.env`
-- Authorize the CLEAN-BOT wallet: `archetypeV3.authorizeCaller(walletAddress)`
+- Run `deploy-archetype-v3.js` and set `ARCHETYPE_V3_ADDRESS` in CLEAN-BOT `.env`
 
 ## No New Dependencies
 
